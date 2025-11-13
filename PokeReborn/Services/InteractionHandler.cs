@@ -35,11 +35,17 @@ public class InteractionHandler(
     private async Task RegisterCommandsAsync()
     {
         Logger.LogInformation("Registering commands...");
-
+        
         if (environment.IsDevelopment())
+        {
+            Logger.LogWarning("Registering commands locally in a development environment.");
             await RegisterCommandsLocallyAsync();
+        }
         else
+        {
+            Logger.LogDebug("Registering commands globally in a development environment.");
             await RegisterCommandsGloballyAsync();
+        }
 
         Logger.LogInformation("Commands have been registered!");
     }

@@ -1,10 +1,12 @@
 using Discord.Addons.Hosting;
+using Microsoft.EntityFrameworkCore;
 using PokeReborn.Common.Options;
 using PokeReborn.Extensions;
 using PokeReborn.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using DbContext = PokeReborn.Context.DbContext;
 
 Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
 
@@ -50,6 +52,8 @@ builder.Services.AddInteractiveService(config =>
     config.ProcessSinglePagePaginators = true;
 });
 builder.Services.AddHostedService<InteractionHandler>();
+
+builder.Services.AddMongoDB<DbContext>(builder.Configuration.GetConnectionString("MongoDb")!);
 
 IHost host = builder.Build();
 await host.RunAsync();
